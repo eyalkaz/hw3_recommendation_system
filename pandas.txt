@@ -1,0 +1,19 @@
+    # movies = []
+    # rates = []
+    # print("hey")
+    # for movie in ratings["movieId"].dropna().unique():
+    #     rates.append(sum(ratings.loc[ratings['movieId'] == movie]["rating"]) / ratings.movieId.value_counts()[movie])
+    #     movies.append(movie)
+	# print(len(rating_per_movie.index)) index is first column of pandas series and values second
+    # print(rating_per_movie.index[len(rating_per_movie.index) - 1])
+    # print(rating_per_movie.index[0])
+    # print(rating_per_movie.values[0])
+	# for user in ratings["userId"].sort_values().dropna().unique():
+	#     movie_rates_by_users = ratings[ratings["userId"] == user].sort_values(by=['movieId'])
+	#     users_means[user] = movie_rates_by_users["rating"].mean()
+	#     movie_rates_by_users["rating"] -= users_means[user]
+	#     non_rated_movies = [{"movieId": movie} for movie in movies if movie not in movie_rates_by_users["movieId"].values]
+	#     movie_rates_by_users = movie_rates_by_users.append(non_rated_movies, ignore_index=True).sort_values(by=['movieId'])
+	#     movie_rates_by_users.rating = movie_rates_by_users.rating.fillna(0)
+	#     print(user)
+	#     # matrix.append(movie_rates_by_users.rating.to_list())
