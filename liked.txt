@@ -1,0 +1,5 @@
+rated = self.user_item_matrix.loc[[user_id]].values[0][np.where(self.user_item_matrix.loc[[user_id]].values != 0)[1]]
+self.movie_generes = dict(zip(movies.movieId, movies.genres))
+movies_geners = [self.movie_generes[self.dict_items[id]] for id in already_rated]
+movies_geners_liked = [movies_geners[i] for i in np.where(rated > 0)[0]]
+['Drama', 'Drama|Romance', 'Drama|Romance', 'Drama', 'Drama|Romance', 'Drama', 'Drama', 'Drama', 'Drama|Romance', 'Drama|Romance', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama|Romance', 'Drama', 'Drama', 'Drama|Romance', 'Drama|Romance', 'Drama', 'Drama', 'Drama', 'Drama', 'Drama|Romance', 'Drama', 'Drama', 'Drama|Romance', 'Drama', 'Drama', 'Drama|Romance', 'Drama', 'Drama|Musical|Romance', 'Drama|Romance']
