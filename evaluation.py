@@ -9,9 +9,18 @@ import pandas as pd
 
 def precision_10(test_set, cf, is_user_based = True):
     "*** YOUR CODE HERE ***"
+    k = 10
+    test_user_item_matrix = test_set.pivot(index='userId', columns='movieId', values='rating')
     test_users = test_set.userId.unique()
     top_k_matrix = [cf.predict_movies(user, 10, is_user_based)[0] for user in test_users]
-    val = 0 #this value should be changed.
+    movies = test_user_item_matrix.columns
+    movie_rated_more_then_4_per_user_in_test =[[movies[i] for i, rating in enumerate(test_user_item_matrix.loc[user].values)
+                                                if not np.isnan(rating) and rating >= 4] for user in test_users]
+
+    def calc_hits(top, rated_high): # calculate how many movies appear in both lists
+        return len(set(top) & set(rated_high)) # every movie can appear only one in each list
+    hits = [calc_hits(top_k_matrix[i], movie_rated_more_then_4_per_user_in_test[i])/k for i in range(len(test_users))]
+    val = sum(hits)/len(test_users)
     print("Precision_k: " + str(val))
 
 def ARHA(test_set, cf, is_user_based = True):
