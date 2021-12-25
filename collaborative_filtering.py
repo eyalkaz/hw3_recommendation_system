@@ -63,12 +63,14 @@ class collaborative_filtering:
         if is_user:
             prediction_matrix = self.user_based_matrix.dot(self.user_item_matrix)
             denominator = np.array([np.abs(self.user_based_matrix).sum(axis=1)]).T
-            prediction_matrix = self.mean_user_rating + (prediction_matrix / denominator)
+            prediction_matrix = (prediction_matrix / denominator)
+            prediction_matrix = self.mean_user_rating + np.nan_to_num(prediction_matrix)
             self.user_prediction_matrix  = prediction_matrix
         else:
             prediction_matrix = self.item_based_metrix.dot(self.movies_rating_matrix)
             denominator = np.array([np.abs(self.item_based_metrix).sum(axis=1)]).T
-            prediction_matrix = self.mean_user_rating + (prediction_matrix / denominator).T  # transpose so it predict for user
+            prediction_matrix = (prediction_matrix / denominator).T  # transpose so it predict for user
+            prediction_matrix = self.mean_user_rating + np.nan_to_num(prediction_matrix)
             self.items_prediction_matrix = prediction_matrix
 
     def create_user_based_matrix(self, data):
@@ -108,6 +110,6 @@ class collaborative_filtering:
             return candidates[x]
         top_k.sort(reverse=True, key=my_func)
         top_k_movies_id = [self.dict_indexes_movies[i] for i in top_k]
-        top_k_movies_titles = [self.movie_titles[id] for id in top_k_movies_id]
-        return top_k_movies_titles
+        top_k_movies_titles = [self.movie_titles[movie_id] for movie_id in top_k_movies_id]
+        return top_k_movies_id, top_k_movies_titles
 
