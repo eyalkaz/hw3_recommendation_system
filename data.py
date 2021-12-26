@@ -39,5 +39,7 @@ def plot_data(data, plot = True):
     ratings = data[0]
     grades_series = ratings["rating"].value_counts().sort_index()
     grades_series.plot.bar(logy=True, title="log scale rating")
+    plt.xlabel("Rating")
+    plt.ylabel("Log appearances")
     if plot:
         plt.show()
