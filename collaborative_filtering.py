@@ -18,6 +18,7 @@ class collaborative_filtering:
         self.dict_indexes_movies = {}
         self.dict_movies_indexes = {}
         self.movie_titles = {}
+        self.titles_id = {}
         self.user_prediction_matrix = []
         self.items_prediction_matrix = []
     def create_fake_user(self,rating):
@@ -31,6 +32,7 @@ class collaborative_filtering:
 
     def create_movies_title_dict(self, df):
         self.movie_titles = dict(zip(df.movieId, df.title))
+        self.titles_id = dict(zip(df.title, df.movieId))
 
     def calc_method_matrix(self, ratings, is_user=True):
         if is_user:
@@ -111,5 +113,5 @@ class collaborative_filtering:
         top_k.sort(reverse=True, key=my_func)
         top_k_movies_id = [self.dict_indexes_movies[i] for i in top_k]
         top_k_movies_titles = [self.movie_titles[movie_id] for movie_id in top_k_movies_id]
-        return top_k_movies_id, top_k_movies_titles
+        return top_k_movies_titles
 
