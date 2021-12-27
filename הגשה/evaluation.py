@@ -13,9 +13,8 @@ def precision_10(test_set, cf, is_user_based = True):
     test_user_item_matrix = test_set.pivot(index='userId', columns='movieId', values='rating')
     test_users = test_set.userId.unique()
     top_k_matrix = [[cf.titles_id[title] for title in cf.predict_movies(user, k, is_user_based)] for user in test_users]
-    movies = test_user_item_matrix.columns
-    movie_rated_more_then_4_per_user_in_test = [[movies[i] for i, rating in enumerate(test_user_item_matrix.loc[user].values)
-                                                if not np.isnan(rating) and rating >= 4] for user in test_users]
+    movie_rated_more_then_4_per_user_in_test = [[movie for movie, rating in test_user_item_matrix.loc[user].dropna().items()
+         if rating >= 4] for user in test_users]  # pass user user and get only rated movies by using dropna
 
     def calc_hits(top, rated_high):  # calculate how many movies appear in both lists
         return set(top) & set(rated_high)  # every movie can appear only one in each list
@@ -29,14 +28,14 @@ def ARHA(test_set, cf, is_user_based = True):
     test_user_item_matrix = test_set.pivot(index='userId', columns='movieId', values='rating')
     test_users = test_set.userId.unique()
     top_k_matrix = [[cf.titles_id[title] for title in cf.predict_movies(user, k, is_user_based)] for user in test_users]
-    movies = test_user_item_matrix.columns
-    movie_rated_more_then_4_per_user_in_test = [[movies[i] for i, rating in enumerate(test_user_item_matrix.loc[user].values)
-                                                if not np.isnan(rating) and rating >= 4] for user in test_users]
+    movie_rated_more_then_4_per_user_in_test = [[movie for movie, rating in test_user_item_matrix.loc[user].dropna().items()
+         if rating >= 4] for user in test_users]  # pass user user and get only rated movies by using dropna
 
     def calc_hits(top, rated_high):  # calculate how many movies appear in both lists
         return set(top) & set(rated_high)  # every movie can appear only one in each list
-    hits = [calc_hits(top_k_matrix[i], movie_rated_more_then_4_per_user_in_test[i]) for i in range(len(test_users))]
-    arhr = sum([sum([1/(i+1) for i in range(k) if top_k_matrix[j][i] in hits[j]]) for j in range(len(test_users))])
+    num_users = len(test_users)
+    hits = [calc_hits(top_k_matrix[i], movie_rated_more_then_4_per_user_in_test[i]) for i in range(num_users)]
+    arhr = sum([sum([1/(i+1) for i in range(k) if top_k_matrix[j][i] in hits[j]]) for j in range(num_users)])
     val = arhr / len(test_users)
     print("ARHR: " + str(val))
 
