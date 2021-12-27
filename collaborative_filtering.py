@@ -23,11 +23,9 @@ class collaborative_filtering:
         self.items_prediction_matrix = []
     def create_fake_user(self,rating):
         "*** YOUR CODE HERE ***"
+        fake = {"userId": 283238, "movieId": 1, "rating": pd.NA}
+        rating = rating.append(fake, ignore_index=True)
         self.calc_method_matrix(rating)
-        self.user_item_matrix.loc[283238] = 0
-        self.dict_users_indexes[283238] = len(self.user_item_matrix) - 1
-        self.mean_user_rating = np.append(self.mean_user_rating, [0])
-        self.mean_user_rating = self.mean_user_rating.reshape(self.mean_user_rating.shape[0], 1)
         self.calc_matrix_similarity()
         self.create_prediction_matrix()
         return self.predict_movies(283238, 5)
