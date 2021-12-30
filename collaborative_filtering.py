@@ -23,12 +23,18 @@ class collaborative_filtering:
         self.items_prediction_matrix = []
     def create_fake_user(self,rating):
         "*** YOUR CODE HERE ***"
-        fake = {"userId": 283238, "movieId": 1, "rating": pd.NA}
-        rating = rating.append(fake, ignore_index=True)
-        self.calc_method_matrix(rating)
+        fake_rating = rating
+        fakes = [{"userId": 283238, "movieId": 5, "rating": 5}, {"userId": 283238, "movieId": 19, "rating": 5},
+                 {"userId": 283238, "movieId": 18, "rating": 5}, {"userId": 283238, "movieId": 2, "rating": 0},
+                 {"userId": 283238, "movieId": 14, "rating": 0}]  # 5 to commedy 0 to others
+        for fake in fakes:
+            fake_rating = fake_rating.append(fake, ignore_index=True)
+        self.calc_method_matrix(fake_rating)
         self.calc_matrix_similarity()
         self.create_prediction_matrix()
-        return self.predict_movies(283238, 5)
+        fake_predictions = self.predict_movies(283238, 5)
+        print("fake user predictions: ", fake_predictions)
+        return fake_predictions
 
     def create_movies_title_dict(self, df):
         self.movie_titles = dict(zip(df.movieId, df.title))
@@ -79,11 +85,13 @@ class collaborative_filtering:
         ratings = data[0]
 
         # for adding fake user
-        #ratings = self.create_fake_user(ratings)
+
 
         "*** YOUR CODE HERE ***"
+        real_ratings = data[0]
         self.create_movies_title_dict(data[1])
-        self.calc_method_matrix(ratings, True)
+        ratings = self.create_fake_user(ratings)
+        self.calc_method_matrix(real_ratings, True)
         self.calc_matrix_similarity(True)
         self.create_prediction_matrix(True)
 
